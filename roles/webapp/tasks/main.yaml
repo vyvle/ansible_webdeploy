@@ -1,0 +1,15 @@
+# this thing just basically finds it and runs it with some permissions set in case things go wrong
+---
+
+- name: Deploy web app from template
+  copy:
+    src: index.html
+    dest: /var/www/html/index.html
+    mode: '0644'
+    
+  post_tasks:
+    - name: Test endpoint
+      uri:
+        url: http://localhost:80
+        status_code: 200
+...
