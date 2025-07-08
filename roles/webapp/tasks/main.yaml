@@ -2,14 +2,14 @@
 ---
 
 - name: Deploy web app from template
-  copy:
+  ansible.builtin.copy:
     src: index.html
     dest: /var/www/html/index.html
     mode: '0644'
     
   post_tasks:
     - name: Test endpoint
-      uri:
+      ansible.builtin.uri:
         url: http://localhost:80
         status_code: 200
 ...

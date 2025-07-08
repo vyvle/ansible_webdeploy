@@ -1,21 +1,21 @@
 # this makes sure the webserver is installed no matter the targeted server
 ---
 - name: Install httpd package (RedHat)
-  yum:
+  ansible.builtin.yum:
     name: httpd
     state: present
   when: ansible_os_family == "RedHat"
   notify: restart apache
 
 - name: Install apache2 package (Debian)
-  apt:
+  ansible.builtin.apt:
     name: apache2
     state: present
   when: ansible_os_family == "Debian"
   notify: restart apache
 
 - name: Ensure service is running
-  service:
+  ansible.builtin.service:
     name: "{{ 'httpd' if ansible_os_family == 'RedHat' else 'apache2' }}"
     state: started
     enabled: true
