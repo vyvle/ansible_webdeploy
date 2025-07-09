@@ -1,1 +1,6 @@
-localhost ansible_connection=local
+all:
+  hosts:
+    my_container:
+      ansible_host: ansible-target
+      ansible_connection: docker
+      ansible_user: root

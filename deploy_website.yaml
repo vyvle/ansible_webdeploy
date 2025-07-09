@@ -1,10 +1,4 @@
 # this is the MAIN file thing that you run. it uses the other things to do the thing
-# specifications: write a playbook to deploy a website.
-#                 The outcome should be something that you can test in a browser
-#                 (i don't care about the content, even an "hello world" is more than fine).
-#                 I'd like to see one or more ansible roles ( i'll leave you how to organize them)
-#                 and a playbook that uses them. Basically you need to: install web server (httpd/apache is fine),
-#                 configure to run on port 80, deploy some content, test the endpoint.
 
 ---
 - name: Deploy website locally
@@ -13,5 +7,10 @@
   roles:
     - webserver
     - webapp
-    
+
+  post_tasks:
+    - name: Test endpoint
+      ansible.builtin.uri:
+        url: http://localhost:80
+        status_code: 200
 ...

@@ -6,10 +6,5 @@
     src: index.html
     dest: /var/www/html/index.html
     mode: '0644'
-    
-  post_tasks:
-    - name: Test endpoint
-      ansible.builtin.uri:
-        url: http://localhost:80
-        status_code: 200
+  
 ...
