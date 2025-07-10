@@ -1,27 +1,37 @@
 # this is the MAIN file thing that you run. it calls roles and other things to do the thing
 
 ---
-- name: Deploy website locally
-  hosts: webserver
-  become: true
+- name: Play 1 - Prepare environment
+  hosts: localhost
+  connection: local
+  become: false
 
   pre_tasks:
-    - name: get podman container information
-      containers.podman.podman_container_info:
-        name: ansible-target
-      register: container_info #variable
+    - name: Ensure Podman is installed
+      ansible.builtin.package:
+        name: podman
+        state: present
+      become: true #sudo
 
-    - name: print container status
-      ansible.builtin.debug:
-        msg: "Container status: {{ container_info.containers[0].state.status }}"
-      when: container_info.exists and container_info.containers | length > 0
-
-    - name: ensure container is running
+    - name: Ensure target container is running
       containers.podman.podman_container:
         name: ansible-target
-        image: geerlingguy/docker-ubuntu2204-ansible:latest
+        image: docker.io/geerlingguy/docker-ubuntu2204-ansible:latest
         state: started
-      when: container_info.exists and container_info.containers | length > 0
+        ports:
+          - "8080:80"
+
+    - name: Add the running container to inventory for the next play
+      ansible.builtin.add_host:
+        name: live_container
+        ansible_host: ansible-target
+        ansible_connection: podman
+        ansible_user: root
+        ansible_remote_tmp: /tmp 
+
+- name: Play 2 - Deploy website inside container
+  hosts: live_container
+  become: true #sudo
 
   roles:
     - webserver
