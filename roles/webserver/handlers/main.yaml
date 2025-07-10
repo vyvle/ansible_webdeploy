@@ -1,6 +1,7 @@
 # this is run only when change occurs
 ---
-- name: restart apache
+- name: Restart apache
   ansible.builtin.service:
     name: "{{ 'httpd' if ansible_os_family == 'RedHat' else 'apache2' }}"
     state: restarted
+...

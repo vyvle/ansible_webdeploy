@@ -14,6 +14,11 @@
   when: ansible_os_family == "Debian"
   notify: restart apache
 
+- name: Update apt cache (Debian)
+  ansible.builtin.apt:
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
 - name: Ensure service is running
   ansible.builtin.service:
     name: "{{ 'httpd' if ansible_os_family == 'RedHat' else 'apache2' }}"

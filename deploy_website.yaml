@@ -11,7 +11,7 @@
       ansible.builtin.package:
         name: podman
         state: present
-      become: true #sudo
+      become: true # sudo
 
     - name: Ensure target container is running
       containers.podman.podman_container:
@@ -27,11 +27,11 @@
         ansible_host: ansible-target
         ansible_connection: podman
         ansible_user: root
-        ansible_remote_tmp: /tmp 
+        ansible_remote_tmp: /tmp
 
 - name: Play 2 - Deploy website inside container
   hosts: live_container
-  become: true #sudo
+  become: true # sudo
 
   roles:
     - webserver
