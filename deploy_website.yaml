@@ -1,9 +1,28 @@
-# this is the MAIN file thing that you run. it uses the other things to do the thing
+# this is the MAIN file thing that you run. it calls roles and other things to do the thing
 
 ---
 - name: Deploy website locally
-  hosts: localhost
+  hosts: webserver
   become: true
+
+  pre_tasks:
+    - name: get podman container information
+      containers.podman.podman_container_info:
+        name: ansible-target
+      register: container_info #variable
+
+    - name: print container status
+      ansible.builtin.debug:
+        msg: "Container status: {{ container_info.containers[0].state.status }}"
+      when: container_info.exists and container_info.containers | length > 0
+
+    - name: ensure container is running
+      containers.podman.podman_container:
+        name: ansible-target
+        image: geerlingguy/docker-ubuntu2204-ansible:latest
+        state: started
+      when: container_info.exists and container_info.containers | length > 0
+
   roles:
     - webserver
     - webapp

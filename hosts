@@ -1,8 +1,2 @@
-# a minor change
-
-all:
-  hosts:
-    my_container:
-      ansible_host: ansible-target
-      ansible_connection: docker
-      ansible_user: root
+[webserver]
+my_container ansible_host=ansible-target ansible_connection=podman ansible_user=root
