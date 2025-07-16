@@ -1,11 +1,16 @@
 # this makes sure the webserver is installed no matter the targeted server
 ---
+- name: Update apt cache (Debian)
+  ansible.builtin.apt:
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
 - name: Install httpd package (RedHat)
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name: httpd
     state: present
   when: ansible_os_family == "RedHat"
-  notify: restart apache
+  notify: Restart apache
 
 - name: Install apache2 package (Debian)
   ansible.builtin.apt:
@@ -13,11 +18,6 @@
     state: present
   when: ansible_os_family == "Debian"
   notify: restart apache
-
-- name: Update apt cache (Debian)
-  ansible.builtin.apt:
-    update_cache: true
-  when: ansible_os_family == "Debian"
 
 - name: Ensure service is running
   ansible.builtin.service:

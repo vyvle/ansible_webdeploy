@@ -11,15 +11,15 @@
       ansible.builtin.package:
         name: podman
         state: present
-      become: true # sudo
+        become: true
 
     - name: Ensure target container is running
       containers.podman.podman_container:
         name: ansible-target
-        image: docker.io/geerlingguy/docker-ubuntu2204-ansible:latest
+        image: docker.io/fedora:latest
         state: started
         ports:
-          - "8080:80"
+          - "80"
 
     - name: Add the running container to inventory for the next play
       ansible.builtin.add_host:
