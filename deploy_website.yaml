@@ -19,7 +19,7 @@
         image: quay.io/fedora/fedora:42
         state: started
         ports:
-          - "80"
+          - "8080:80"
 
     - name: Add the running container to inventory for the next play
       ansible.builtin.add_host:
