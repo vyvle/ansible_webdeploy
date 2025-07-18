@@ -5,6 +5,11 @@
     update_cache: true
   when: ansible_os_family == "Debian"
 
+- name: Update dnf cache (RedHat)
+  ansible.builtin.dnf:
+    update_cache: true
+  when: ansible_os_family == "RedHat"
+
 - name: Install httpd package (RedHat)
   ansible.builtin.dnf:
     name: httpd

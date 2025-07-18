@@ -11,12 +11,12 @@
       ansible.builtin.package:
         name: podman
         state: present
-        become: true
+      become: true
 
     - name: Ensure target container is running
       containers.podman.podman_container:
         name: ansible-target
-        image: docker.io/fedora:latest
+        image: quay.io/fedora/fedora:42
         state: started
         ports:
           - "80"
